@@ -1,12 +1,12 @@
 {
   "name": "ato-ichinen",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "manifest_version": 2,
-  "description": "Activeにしている間、Google検索結果を1年以内のものに限定します。",
+  "description": "Activeにしている間、Google検索結果を指定期間のものに限定します。",
   "background": { "page": "background/background.html" },
+  "options_page": "options/options.html",
   "browser_action" :
   {
-    "default_icon" : "icon/icon-19-off.png",
     "default_title": "ato-ichinen"
   },
   "permissions" : [

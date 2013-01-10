@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<head>
+  <title>オプション設定</title>
+  <meta charset="utf-8">
+  <link href="../css/bootstrap.min.css" rel="stylesheet" />
+  <link href="options.css" rel="stylesheet" />
+</head>
+<body style="padding-top: 20px;">
+<body>
+  <div class="container">
+    <div class="alert alert-success">
+      <strong>設定を保存しました。</strong> 
+    </div>
+    <form action="" id="setting-form" class="form-horizontal">
+      <fieldset>
+	<legend>オプション設定</legend>
+	<div class="control-group">
+	  <label class="control-label" for="periodNum" >期間数</label>
+	  <div class="controls">
+	    <input type="text" id="periodNum" name="periodNum" class="span2">
+	  </div>
+	</div>
+	<div class="control-group">
+	  <label class="control-label" for="period">期間単位</label>
+	  <div class="controls">
+	    <select id="period" name="period" class="span2">
+	      <option value="年">年</option>
+	      <option value="月">月</option>
+	      <option value="週">週</option>
+	      <option value="日">日</option>
+	      <option value="時">時</option>
+	      <option value="分">分</option>
+	      <option value="秒">秒</option>
+	    </select>
+	  </div>
+	</div>
+	<div class="form-actions">
+	  <button id="save" type="submit" class="btn btn-primary">保存する</button>
+	</div>
+      </fieldset>
+    </form>
+  </div>
+  <script src="../lib/jquery-1.7.2.min.js"></script>
+  <script src="../lib/bootstrap.min.js"></script>
+  <script src="../lib/jquery.validate.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

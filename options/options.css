@@ -1,0 +1,13 @@
+label.error {
+    font-weight: bold;
+    color: red;
+    padding: 2px 8px;
+    margin-top: 2px;
+}
+
+label.valid {
+    font-weight: bold;
+    display: inline-block;
+    color: green;
+    margin-left: 10px;
+}

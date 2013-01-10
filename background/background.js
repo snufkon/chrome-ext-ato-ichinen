@@ -1,27 +1,52 @@
-chrome.browserAction.onClicked.addListener(function(tab) {
-  if(statusManager.getStatus()) {
-    chrome.browserAction.setIcon({path:"../icon/icon-19-off.png"});
-  } else {
-    chrome.browserAction.setIcon({path:"../icon/icon-19-on.png"});
-  }
-  statusManager.changeStatus();
+$(document).ready(function() {
+    iconManager.setCanvas('canvas');
+    iconManager.drawOffIcon();
+    iconManager.setPeriodNumBadge();
+});
 
-  if(urlManager.isGoogle(tab.url)) {
+chrome.browserAction.onClicked.addListener(function(tab) {
+    iconManager.setPeriodNumBadge();
+    
     if(statusManager.getStatus()) {
-      chrome.tabs.update(tab.id, {url:tab.url + "&as_qdr=y1"});
+	iconManager.drawOffIcon();
     } else {
-      var url = tab.url;
-      url = url.replace(/&as_qdr=y1/g, "");
-      url = url.replace(/&tbs=qdr:y/g, "");
-      chrome.tabs.update(tab.id, {url:url});
+	iconManager.drawOnIcon();
     }
-  }
+    statusManager.changeStatus();
+
+    if(!urlManager.isGoogle(tab.url)) { return; }
+    if(statusManager.getStatus()) {
+	updateToSpecifiedPeriod(tab);
+    } else {
+	updateToAnyTime(tab);
+    }
 });
+
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-  if(statusManager.getStatus()) {
-    if(urlManager.isGoogle(tab.url) && !urlManager.getParam(tab.url, "as_qdr") && !urlManager.getParam(tab.url, "url")) {
-      chrome.tabs.update(tabId, {url:tab.url + "&as_qdr=y1"});
-    }
-  }
+    if (changeInfo.status != "loading") { return; }
+    if (!statusManager.getStatus()) { return; }
+    if (!urlManager.isGoogle(tab.url)) { return; }
+    if (urlManager.getParam(tab.url, "as_qdr")) { return; }
+    if (urlManager.getParam(tab.url, "url")) { return; }
+    updateToSpecifiedPeriod(tab);
 });
+
+function updateToSpecifiedPeriod(tab) {
+    var num = localStorage['periodNum'] ? localStorage['periodNum'] : 1;
+    var name = localStorage['periodName'] ? localStorage['periodName'] : '年';
+    var periodUnitMap = {'年': 'y', '月': 'm', '週': 'w', '日': 'd', '時': 'h', '分': 'm', '秒': 's'};
+    var asQdrValue = periodUnitMap[name] + num;
+    chrome.tabs.update(tab.id, {url:tab.url + "&as_qdr=" + asQdrValue});
+}
+
+function updateToAnyTime(tab) {
+    var url = tab.url;
+    var asQdrPattern = "&as_qdr=[snhdwmy]\\d";
+    var tbsPattern = "&tbs=qdr:[snhdwmy]\\d";
+    url = url.replace(new RegExp(asQdrPattern, "g"), "");
+    url = url.replace(new RegExp(tbsPattern, "g"), "");
+    chrome.tabs.update(tab.id, {url:url});
+}
+
+
 
