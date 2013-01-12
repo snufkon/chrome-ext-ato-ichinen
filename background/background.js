@@ -34,7 +34,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 function updateToSpecifiedPeriod(tab) {
     var num = localStorage['periodNum'] ? localStorage['periodNum'] : 1;
     var name = localStorage['periodName'] ? localStorage['periodName'] : '年';
-    var periodUnitMap = {'年': 'y', '月': 'm', '週': 'w', '日': 'd', '時': 'h', '分': 'm', '秒': 's'};
+    var periodUnitMap = {'年': 'y', '月': 'm', '週': 'w', '日': 'd', '時': 'h', '分': 'n', '秒': 's'};
     var asQdrValue = periodUnitMap[name] + num;
     chrome.tabs.update(tab.id, {url:tab.url + "&as_qdr=" + asQdrValue});
 }
